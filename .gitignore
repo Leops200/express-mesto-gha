@@ -1,0 +1,11 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+# Нода
+node_modules
+# Опции
+.npm
+.DS_Store
+.idea
+.vscode
