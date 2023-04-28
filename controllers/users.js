@@ -21,6 +21,7 @@ module.exports.getAllUsers = (req, res) => {
 //=====================================================
 module.exports.getUserId = (req, res) => {
   User.findById(req.params.userId)
+    .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
       if (err instanceof CastError) {

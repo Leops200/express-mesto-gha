@@ -107,8 +107,8 @@ module.exports.removeLike = (req, res) => {
             message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
           });
       }
-      return res.status(ERROR_SERVER_CODE).send({
-        message: `Ошибка сервера ${ERROR_SERVER_CODE}`,
+      return res.status(ERROR_BAD_REQUEST_CODE).send({
+        message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
       });
     });
 };
@@ -135,8 +135,8 @@ module.exports.deleteCards = (req, res) => {
             message: `Hекорректные данные ${ERROR_NOT_FOUND_CODE}`,
           });
       }
-      return res.status(ERROR_SERVER_CODE).send({
-        message: `Ошибка сервера ${ERROR_SERVER_CODE}`,
+      return res.status(ERROR_BAD_REQUEST_CODE).send({
+        message: `Hекорректные данные ${ERROR_BAD_REQUEST_CODE}`,
       });
     });
 };
