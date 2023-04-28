@@ -60,38 +60,38 @@ module.exports.updateUser = (req, res) => {
     new: true
   })
     .then((user) => res.send(user))
-    .catch ((err) => {
-  if (err instanceof ValidationError) {
-    return res
-      .status(ERROR_BAD_REQUEST_CODE)
-      .send({
-        message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+    .catch((err) => {
+      if (err instanceof ValidationError) {
+        return res
+          .status(ERROR_BAD_REQUEST_CODE)
+          .send({
+            message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+          });
+      }
+      return res.status(ERROR_BAD_REQUEST_CODE).send({
+        message: `Введены некорректные данные ${ERROR_BAD_REQUEST_CODE}`
       });
-  }
-  return res.status(ERROR_SERVER_CODE).send({
-    message: `Ошибка сервера ${ERROR_SERVER_CODE}`
-  });
-});
+    });
 };
 //=====================================================
 
 module.exports.updateAvatar = (req, res, avatar) => {
   const userId = req.user._id;
-  User.findByIdAndUpdate( userId, avatar, {
+  User.findByIdAndUpdate(userId, avatar, {
     runValidators: true,
     new: true
   })
     .then((user) => res.send(user))
-    .catch ((err) => {
-  if (err instanceof ValidationError) {
-    return res
-      .status(ERROR_BAD_REQUEST_CODE)
-      .send({
-        message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+    .catch((err) => {
+      if (err instanceof ValidationError) {
+        return res
+          .status(ERROR_BAD_REQUEST_CODE)
+          .send({
+            message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+          });
+      }
+      return res.status(ERROR_SERVER_CODE).send({
+        message: `Ошибка сервера ${ERROR_SERVER_CODE}`
       });
-  }
-  return res.status(ERROR_SERVER_CODE).send({
-    message: `Ошибка сервера ${ERROR_SERVER_CODE}`
-  });
-});
+    });
 };
