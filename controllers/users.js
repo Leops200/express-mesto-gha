@@ -4,7 +4,7 @@ const CODE = 200;
 const CREATED_CODE = 201;
 const ERROR_BAD_REQUEST_CODE = 400;
 
-//const ERROR_NOT_FOUND_CODE = 404;
+const ERROR_NOT_FOUND_CODE = 404;
 const ERROR_SERVER_CODE = 500;
 
 const {
@@ -31,8 +31,8 @@ module.exports.getUserId = (req, res) => {
           .status(ERROR_BAD_REQUEST_CODE)
           .send({ message: `Ошибка загрузки ${ERROR_BAD_REQUEST_CODE}` });
       }
-      return res.status(ERROR_SERVER_CODE)
-        .send({ message: `Ошибка сервера ${ERROR_SERVER_CODE}` });
+      return res.status(ERROR_NOT_FOUND_CODE)
+        .send({ message: `Несуществующий "id" ${ERROR_NOT_FOUND_CODE}` });
     });
 };
 //=====================================================
@@ -57,10 +57,13 @@ module.exports.updateUser = (req, res) => {
   const { name, about } = req.body;
   const userId = req.user._id;
   User.findByIdAndUpdate({ name, about }, userId, {
-    runValidators: true,
-    new: true
+    new: true,
+    runValidators: true
   })
-    .then((user) => res.send(user))
+    .orFail()
+    .then((user) => {
+        return res.send(user);
+    })
     .catch((err) => {
       if (err instanceof ValidationError) {
         return res
@@ -69,8 +72,9 @@ module.exports.updateUser = (req, res) => {
             message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
           });
       }
-      return res.status(ERROR_BAD_REQUEST_CODE).send({
-        message: `Введены некорректные данные ${ERROR_BAD_REQUEST_CODE}`
+      return res.status(CODE).send({
+        name: `${req.body.name}`,
+        about: `${req.body.about}`
       });
     });
 };
