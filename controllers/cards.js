@@ -130,9 +130,9 @@ module.exports.deleteCards = (req, res) => {
     .catch((err) => {
       if (err instanceof ValidationError) {
         return res
-          .status(ERROR_BAD_REQUEST_CODE)
+          .status(ERROR_NOT_FOUND_CODE)
           .send({
-            message: `Переданы некорректные данные при создании карточки ${ERROR_CODE}`,
+            message: `Hекорректные данные ${ERROR_NOT_FOUND_CODE}`,
           });
       }
       return res.status(ERROR_SERVER_CODE).send({

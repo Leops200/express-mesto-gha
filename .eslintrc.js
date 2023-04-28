@@ -1,3 +1,4 @@
+
 module.exports = {
     "env": {
         "browser": true,
@@ -6,9 +7,10 @@ module.exports = {
         "node": true
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended"
+       //"airbnb-base",
+       "eslint:recommended",
+       //"plugin:react/recommended",
+       // "plugin:@typescript-eslint/recommended"
     ],
     "overrides": [
     ],
@@ -21,5 +23,8 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
+      //"no-var-requires": 0,
+      "no-underscore-dangle": ["error", { "allow": ["_id"] }],
+      "no-console": "off"
     }
 }
