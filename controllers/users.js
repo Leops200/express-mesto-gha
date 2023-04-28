@@ -1,15 +1,15 @@
-const user = require('../models/user');
 const User = require('../models/user');
+
 const CODE = 200;
 const CREATED_CODE = 201;
 const ERROR_BAD_REQUEST_CODE = 400;
-const ERROR_NOT_FOUND_CODE = 404;
+
+//const ERROR_NOT_FOUND_CODE = 404;
 const ERROR_SERVER_CODE = 500;
 
 const {
   CastError,
-  ValidationError,
-  DocumentNotFoundError
+  ValidationError
 } = require('mongoose').Error;
 //=====================================================
 module.exports.getAllUsers = (req, res) => {
@@ -21,7 +21,7 @@ module.exports.getAllUsers = (req, res) => {
 //=====================================================
 module.exports.getUserId = (req, res) => {
   User.findById(req.params.userId)
-    .then((user) => res.send(user), console.log(user))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err instanceof CastError) {
         return res
@@ -59,40 +59,39 @@ module.exports.updateUser = (req, res) => {
     runValidators: true,
     new: true
   })
-    .then((user) => res.send(user), console.log(user))
-    .catch ((err) => {
-  if (err instanceof ValidationError) {
-    return res
-      .status(ERROR_BAD_REQUEST_CODE)
-      .send({
-        message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+    .then((user) => res.send(user))
+    .catch((err) => {
+      if (err instanceof ValidationError) {
+        return res
+          .status(ERROR_BAD_REQUEST_CODE)
+          .send({
+            message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+          });
+      }
+      return res.status(ERROR_BAD_REQUEST_CODE).send({
+        message: `Введены некорректные данные ${ERROR_BAD_REQUEST_CODE}`
       });
-  }
-  return res.status(ERROR_SERVER_CODE).send({
-    message: `Ошибка сервера ${ERROR_SERVER_CODE}`
-  });
-});
+    });
 };
 //=====================================================
 
-module.exports.updateAvatar = (req, res) => {
-  const { name, about } = req.body;
+module.exports.updateAvatar = (req, res, avatar) => {
   const userId = req.user._id;
-  User.findByIdAndUpdate( userId, avatar, {
+  User.findByIdAndUpdate(userId, avatar, {
     runValidators: true,
     new: true
   })
-    .then((user) => res.send(user), console.log(user))
-    .catch ((err) => {
-  if (err instanceof ValidationError) {
-    return res
-      .status(ERROR_BAD_REQUEST_CODE)
-      .send({
-        message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+    .then((user) => res.send(user))
+    .catch((err) => {
+      if (err instanceof ValidationError) {
+        return res
+          .status(ERROR_BAD_REQUEST_CODE)
+          .send({
+            message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+          });
+      }
+      return res.status(ERROR_SERVER_CODE).send({
+        message: `Ошибка сервера ${ERROR_SERVER_CODE}`
       });
-  }
-  return res.status(ERROR_SERVER_CODE).send({
-    message: `Ошибка сервера ${ERROR_SERVER_CODE}`
-  });
-});
+    });
 };
