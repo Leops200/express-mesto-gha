@@ -44,8 +44,8 @@ module.exports.createUser = (req, res) => {
       .send(user))
     .catch((err) => {
       if (err instanceof ValidationError) {
-        return res.status(ERROR_BAD_REQUEST_CODE)
-          .send({ message: `Ошибка загрузки ${ERROR_BAD_REQUEST_CODE}` })
+        return res.status(ERROR_NOT_FOUND_CODE)
+          .send({ message: `Ошибка загрузки ${ERROR_NOT_FOUND_CODE}` })
       }
       return res.status(ERROR_SERVER_CODE)
         .send({ message: `Ошибка сервера ${ERROR_SERVER_CODE}` });
@@ -60,10 +60,8 @@ module.exports.updateUser = (req, res) => {
     new: true,
     runValidators: true
   })
-    .orFail()
-    .then((user) => {
-        return res.send(user);
-    })
+    //.orFail()
+    .then((user) => res.send(user))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         return res
