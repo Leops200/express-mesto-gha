@@ -61,20 +61,19 @@ module.exports.updateUser = (req, res) => {
     runValidators: true
   })
     .orFail()
-    .then(() => {
-        return res.send("UYGJHVJHV");
+    .then((user) => {
+        return res.send(user);
     })
-    .catch((err) => {
-      if (err instanceof ValidationError) {
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
         return res
           .status(ERROR_BAD_REQUEST_CODE)
           .send({
             message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
           });
       }
-      return res.status(CODE).send({
-        name: `${req.body.name}`,
-        about: `${req.body.about}`
+      return res.status(ERROR_SERVER_CODE).send({
+        message: `Ошибка сервера ${ERROR_SERVER_CODE}`
       });
     });
 };
