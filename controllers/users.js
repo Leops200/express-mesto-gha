@@ -61,8 +61,8 @@ module.exports.updateUser = (req, res) => {
     runValidators: true
   })
     .orFail()
-    .then((user) => {
-        return res.send(user);
+    .then(() => {
+        return res.send("UYGJHVJHV");
     })
     .catch((err) => {
       if (err instanceof ValidationError) {
