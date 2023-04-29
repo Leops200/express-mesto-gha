@@ -4,7 +4,7 @@ const CODE = 200;
 const CREATED_CODE = 201;
 const ERROR_BAD_REQUEST_CODE = 400;
 
-//const ERROR_NOT_FOUND_CODE = 404;
+const ERROR_NOT_FOUND_CODE = 404;
 const ERROR_SERVER_CODE = 500;
 
 const {
@@ -31,8 +31,8 @@ module.exports.getUserId = (req, res) => {
           .status(ERROR_BAD_REQUEST_CODE)
           .send({ message: `Ошибка загрузки ${ERROR_BAD_REQUEST_CODE}` });
       }
-      return res.status(ERROR_SERVER_CODE)
-        .send({ message: `Ошибка сервера ${ERROR_SERVER_CODE}` });
+      return res.status(ERROR_NOT_FOUND_CODE)
+        .send({ message: `страница не найдена ${ERROR_NOT_FOUND_CODE}` });
     });
 };
 //=====================================================
@@ -76,7 +76,8 @@ module.exports.updateUser = (req, res) => {
 };
 //=====================================================
 
-module.exports.updateAvatar = (req, res, avatar) => {
+module.exports.updateAvatar = (req, res) => {
+  const {avatar} = req.body;
   const userId = req.user._id;
   User.findByIdAndUpdate(userId, avatar, {
     runValidators: true,
@@ -95,4 +96,4 @@ module.exports.updateAvatar = (req, res, avatar) => {
         message: `Ошибка сервера ${ERROR_SERVER_CODE}`
       });
     });
-  }
+  };
