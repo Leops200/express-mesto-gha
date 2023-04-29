@@ -23,12 +23,12 @@ module.exports.createCards = (req, res) => {
         return res
           .status(ERROR_BAD_REQUEST_CODE)
           .send(
-            //message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+            {message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`},
             console.log("bad createCards")
           );
       }
       return res.status(ERROR_SERVER_CODE).send(
-        // message: `Ошибка сервера ${ERROR_SERVER_CODE}`,
+        {message: `Ошибка сервера ${ERROR_SERVER_CODE}`},
         console.log("2bad createCards")
       );
     });
