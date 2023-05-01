@@ -3,10 +3,10 @@ const { errorsProcessing } = require('../utils/utils');
 
 const CODE = 200;
 const CREATED_CODE = 201;
-// const ERROR_BAD_REQUEST_CODE = 400;
+const ERROR_BAD_REQUEST_CODE = 400;
 
 // const ERROR_NOT_FOUND_CODE = 404;
-// npconst ERROR_SERVER_CODE = 500;
+const ERROR_SERVER_CODE = 500;
 
 //= ====================================================
 module.exports.getAllUsers = (req, res) => {
@@ -28,7 +28,14 @@ module.exports.createUser = (req, res) => {
   User.create({ name, about, avatar })
     .then((user) => res.status(CREATED_CODE)
       .send(user))
-    .catch((err) => errorsProcessing(err, res));
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
+        return res.status(ERROR_BAD_REQUEST_CODE)
+          .send({ message: `Ошибка загрузки ${ERROR_BAD_REQUEST_CODE}` });
+      }
+      return res.status(ERROR_SERVER_CODE)
+        .send({ message: `Ошибка сервера ${ERROR_SERVER_CODE}` });
+    });
 };
 //= ====================================================
 
