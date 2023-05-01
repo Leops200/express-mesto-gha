@@ -1,3 +1,8 @@
+const {
+  CastError,
+  ValidationError,
+} = require('mongoose').Error;
+
 const User = require('../models/user');
 
 const CODE = 200;
@@ -7,18 +12,14 @@ const ERROR_BAD_REQUEST_CODE = 400;
 const ERROR_NOT_FOUND_CODE = 404;
 const ERROR_SERVER_CODE = 500;
 
-const {
-  CastError,
-  ValidationError
-} = require('mongoose').Error;
-//=====================================================
+//= ====================================================
 module.exports.getAllUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(CODE).send(users))
     .catch(() => res.status(ERROR_SERVER_CODE)
       .send({ message: `Ошибка сервера ${ERROR_SERVER_CODE}` }));
 };
-//=====================================================
+//= ====================================================
 module.exports.getUserId = (req, res) => {
   User.findById(req.params.userId)
     .orFail()
@@ -26,8 +27,8 @@ module.exports.getUserId = (req, res) => {
     .catch((err) => {
       if (err instanceof CastError) {
         return res
-          //.send(console.log('res: '))
-          //.send(console.log({res}))
+          // .send(console.log('res: '))
+          // .send(console.log({res}))
           .status(ERROR_BAD_REQUEST_CODE)
           .send({ message: `Ошибка загрузки ${ERROR_BAD_REQUEST_CODE}` });
       }
@@ -35,7 +36,7 @@ module.exports.getUserId = (req, res) => {
         .send({ message: `страница не найдена ${ERROR_NOT_FOUND_CODE}` });
     });
 };
-//=====================================================
+//= ====================================================
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
@@ -45,20 +46,20 @@ module.exports.createUser = (req, res) => {
     .catch((err) => {
       if (err instanceof ValidationError) {
         return res.status(ERROR_BAD_REQUEST_CODE)
-          .send({ message: `Ошибка загрузки ${ERROR_BAD_REQUEST_CODE}` })
+          .send({ message: `Ошибка загрузки ${ERROR_BAD_REQUEST_CODE}` });
       }
       return res.status(ERROR_SERVER_CODE)
         .send({ message: `Ошибка сервера ${ERROR_SERVER_CODE}` });
     });
 };
-//=====================================================
+//= ====================================================
 
 module.exports.updateUser = (req, res) => {
   const { name, about } = req.body;
   const userId = req.user._id;
   User.findByIdAndUpdate(userId, { name, about }, {
     runValidators: true,
-    new: true
+    new: true,
   })
     .then((user) => res.send(user))
     .catch((err) => {
@@ -70,11 +71,11 @@ module.exports.updateUser = (req, res) => {
           });
       }
       return res.status(ERROR_BAD_REQUEST_CODE).send({
-        message: `Введены некорректные данные ${ERROR_BAD_REQUEST_CODE}`
+        message: `Введены некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
       });
     });
 };
-//=====================================================
+//= ====================================================
 
 module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;

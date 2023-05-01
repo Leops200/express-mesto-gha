@@ -1,3 +1,8 @@
+const {
+  // CastError,
+  ValidationError,
+} = require('mongoose').Error;
+
 const Card = require('../models/card');
 
 const CODE = 200;
@@ -6,11 +11,7 @@ const ERROR_BAD_REQUEST_CODE = 400;
 const ERROR_NOT_FOUND_CODE = 404;
 const ERROR_SERVER_CODE = 500;
 
-const {
-  //CastError,
-  ValidationError
-} = require('mongoose').Error;
-//======================================================
+//= =====================================================
 
 module.exports.createCards = (req, res) => {
   const { name, link } = req.body;
@@ -23,16 +24,16 @@ module.exports.createCards = (req, res) => {
         return res
           .status(ERROR_BAD_REQUEST_CODE)
           .send(
-            {message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`}
+            { message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}` },
           );
       }
       return res.status(ERROR_SERVER_CODE).send(
-        {message: `Ошибка сервера ${ERROR_SERVER_CODE}`}
-        //console.log("2bad createCards")
+        { message: `Ошибка сервера ${ERROR_SERVER_CODE}` },
+        // console.log("2bad createCards")
       );
     });
 };
-//======================================================
+//= =====================================================
 
 module.exports.getAllCards = (req, res) => {
   Card.find({})
@@ -47,7 +48,7 @@ module.exports.getAllCards = (req, res) => {
         });
     });
 };
-//======================================================
+//= =====================================================
 
 module.exports.addLike = (req, res) => {
   const owner = req.user._id;
@@ -79,7 +80,7 @@ module.exports.addLike = (req, res) => {
       });
     });
 };
-//======================================================
+//= =====================================================
 
 module.exports.removeLike = (req, res) => {
   const owner = req.user._id;
@@ -111,7 +112,7 @@ module.exports.removeLike = (req, res) => {
       });
     });
 };
-//======================================================
+//= =====================================================
 
 module.exports.deleteCards = (req, res) => {
   const { cardId } = req.params;

@@ -13,30 +13,20 @@
     "url": "git+https://github.com/Leops200/express-mesto-gha.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Leops",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Leops200/express-mesto-gha/issues"
   },
   "homepage": "https://github.com/Leops200/express-mesto-gha#readme",
   "dependencies": {
-    "eslint-config-airbnb-base": "^15.0.0",
     "express": "^4.18.2",
-    "mongo": "^0.1.0",
-    "mongodb": "^5.3.0",
-    "mongoose": "^7.1.0",
-    "mongoose-errors": "^1.1.3",
-    "validator": "^13.9.0"
+    "mongoose": "^7.1.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.59.1",
-    "@typescript-eslint/parser": "^5.59.1",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint": "^8.39.0",
-    "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "nodemon": "^2.0.22"
   }
 }
