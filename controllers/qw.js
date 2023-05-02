@@ -1,5 +1,3 @@
-const { errorsProcessing } = require('../utils/utils');
-
 const User = require('../models/user');
 
 const CODE = 200;
@@ -13,7 +11,8 @@ const ERROR_SERVER_CODE = 500;
 module.exports.getAllUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(CODE).send(users))
-    .catch((err) => errorsProcessing(err, res));
+    .catch(() => res.status(ERROR_SERVER_CODE)
+      .send({ message: `Ошибка сервера ${ERROR_SERVER_CODE}` }));
 };
 //= ====================================================
 module.exports.getUserId = (req, res) => {
@@ -46,10 +45,10 @@ module.exports.createUser = (req, res) => {
     .catch((error) => {
       if (error.name === 'ValidationError') {
         return res.status(ERROR_BAD_REQUEST_CODE)
-          .send({ message: `Ошибка загрузки ${ERROR_BAD_REQUEST_CODE}` });
+          .send({ message: `Введены некорректные данные ${ERROR_BAD_REQUEST_CODE}` });
       }
       return res.status(ERROR_SERVER_CODE)
-        .send({ message: `Введён некорректный id ${ERROR_SERVER_CODE}` });
+        .send({ message: `Ошибка сервера ${ERROR_SERVER_CODE}` });
     });
 };
 //= ====================================================
@@ -61,9 +60,29 @@ module.exports.updateUser = (req, res) => {
     runValidators: true,
     new: true,
   })
-    .orFail()
-    .then((user) => res.send(user))
-    .catch((err) => errorsProcessing(err, res));
+    .then((user) => {
+      if (!user) {
+        return res.status(ERROR_NOT_FOUND_CODE)
+          .send({ message: `Не найден указанный пользователь ${ERROR_NOT_FOUND_CODE}` });
+      }
+      return res.send(user);
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return res
+          .status(ERROR_BAD_REQUEST_CODE)
+          .send({
+            message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+          });
+      }
+      if (err.name === 'CastError') {
+        return res.status(ERROR_BAD_REQUEST_CODE)
+          .send({ message: `Некорректный id ${ERROR_BAD_REQUEST_CODE}` });
+      }
+      return res.status(ERROR_SERVER_CODE).send({
+        message: `Ошибка сервера ${ERROR_SERVER_CODE}`,
+      });
+    });
 };
 //= ====================================================
 
@@ -74,7 +93,27 @@ module.exports.updateAvatar = (req, res) => {
     runValidators: true,
     new: true,
   })
-    .orFail()
-    .then((user) => res.send(user))
-    .catch((err) => errorsProcessing(err, res));
+    .then((user) => {
+      if (!user) {
+        return res.status(ERROR_NOT_FOUND_CODE)
+          .send({ message: `Не найден указанный пользователь ${ERROR_NOT_FOUND_CODE}` });
+      }
+      return res.send(user);
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return res
+          .status(ERROR_BAD_REQUEST_CODE)
+          .send({
+            message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+          });
+      }
+      if (err.name === 'CastError') {
+        return res.status(ERROR_BAD_REQUEST_CODE)
+          .send({ message: `Некорректный id ${ERROR_BAD_REQUEST_CODE}` });
+      }
+      return res.status(ERROR_SERVER_CODE).send({
+        message: `Ошибка сервера ${ERROR_SERVER_CODE}`,
+      });
+    });
 };
