@@ -1,11 +1,12 @@
-const User = require('../models/user');
 const { errorsProcessing } = require('../utils/utils');
+
+const User = require('../models/user');
 
 const CODE = 200;
 const CREATED_CODE = 201;
 const ERROR_BAD_REQUEST_CODE = 400;
 
-// const ERROR_NOT_FOUND_CODE = 404;
+const ERROR_NOT_FOUND_CODE = 404;
 const ERROR_SERVER_CODE = 500;
 
 //= ====================================================
@@ -19,7 +20,21 @@ module.exports.getUserId = (req, res) => {
   User.findById(req.params.userId)
     .orFail()
     .then((user) => res.send(user))
-    .catch((err) => errorsProcessing(err, res));
+    .catch((err) => {
+      if (err.name === 'DocumentNotFoundError') {
+        return res.status(ERROR_NOT_FOUND_CODE)
+          .send({
+            message: `В базе отсутствует такой пользователь ${ERROR_NOT_FOUND_CODE}`,
+          });
+      }
+      if (err.name === 'CastError') {
+        return res
+          .status(ERROR_BAD_REQUEST_CODE)
+          .send({ message: `Введён некорректный id ${ERROR_BAD_REQUEST_CODE}` });
+      }
+      return res.status(ERROR_SERVER_CODE)
+        .send({ message: `Ошибка сервера ${ERROR_SERVER_CODE}` });
+    });
 };
 //= ====================================================
 
@@ -34,7 +49,7 @@ module.exports.createUser = (req, res) => {
           .send({ message: `Ошибка загрузки ${ERROR_BAD_REQUEST_CODE}` });
       }
       return res.status(ERROR_SERVER_CODE)
-        .send({ message: `Ошибка сервера ${ERROR_SERVER_CODE}` });
+        .send({ message: `Введён некорректный id ${ERROR_SERVER_CODE}` });
     });
 };
 //= ====================================================
