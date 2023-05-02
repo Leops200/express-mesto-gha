@@ -68,15 +68,12 @@ module.exports.addLike = (req, res) => {
       return res.status(CODE).send(card);
     })
     .catch((err) => {
-      if (err instanceof ValidationError) {
-        return res
-          .status(ERROR_BAD_REQUEST_CODE)
-          .send({
-            message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
-          });
+      if (err.name === 'CastError') {
+        return res.status(ERROR_BAD_REQUEST_CODE)
+          .send({ message: `Некорректный id ${ERROR_BAD_REQUEST_CODE}` });
       }
-      return res.status(ERROR_BAD_REQUEST_CODE).send({
-        message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+      return res.status(ERROR_SERVER_CODE).send({
+        message: `Ошибка сервера ${ERROR_SERVER_CODE}`,
       });
     });
 };
@@ -100,15 +97,12 @@ module.exports.removeLike = (req, res) => {
       return res.status(CODE).send(card);
     })
     .catch((err) => {
-      if (err instanceof ValidationError) {
-        return res
-          .status(ERROR_BAD_REQUEST_CODE)
-          .send({
-            message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
-          });
+      if (err.name === 'CastError') {
+        return res.status(ERROR_BAD_REQUEST_CODE)
+          .send({ message: `Некорректный id ${ERROR_BAD_REQUEST_CODE}` });
       }
-      return res.status(ERROR_BAD_REQUEST_CODE).send({
-        message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+      return res.status(ERROR_SERVER_CODE).send({
+        message: `Ошибка сервера ${ERROR_SERVER_CODE}`,
       });
     });
 };
@@ -128,15 +122,12 @@ module.exports.deleteCards = (req, res) => {
         });
     })
     .catch((err) => {
-      if (err instanceof ValidationError) {
-        return res
-          .status(ERROR_NOT_FOUND_CODE)
-          .send({
-            message: `Hекорректные данные ${ERROR_NOT_FOUND_CODE}`,
-          });
+      if (err.name === 'CastError') {
+        return res.status(ERROR_BAD_REQUEST_CODE)
+          .send({ message: `Некорректный id ${ERROR_BAD_REQUEST_CODE}` });
       }
-      return res.status(ERROR_BAD_REQUEST_CODE).send({
-        message: `Hекорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+      return res.status(ERROR_SERVER_CODE).send({
+        message: `Ошибка сервера ${ERROR_SERVER_CODE}`,
       });
     });
 };
