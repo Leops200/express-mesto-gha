@@ -89,10 +89,11 @@ module.exports.updateUser = (req, res) => {
 module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
   const userId = req.user._id;
-  User.findByIdAndUpdate(userId, avatar, {
-    runValidators: true,
-    new: true,
-  })
+  User.findByIdAndUpdate(
+    userId,
+    { avatar }, // параметры необходимо передавать в объекте
+    { runValidators: true, new: true },
+  )
     .then((user) => {
       if (!user) {
         return res.status(ERROR_NOT_FOUND_CODE)
@@ -102,11 +103,9 @@ module.exports.updateAvatar = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res
-          .status(ERROR_BAD_REQUEST_CODE)
-          .send({
-            message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
-          });
+        return res.status(ERROR_BAD_REQUEST_CODE).send({
+          message: `Некорректные данные ${ERROR_BAD_REQUEST_CODE}`,
+        });
       }
       if (err.name === 'CastError') {
         return res.status(ERROR_BAD_REQUEST_CODE)
