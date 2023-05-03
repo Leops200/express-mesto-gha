@@ -11,12 +11,7 @@ module.exports = {
   ],
   overrides: [
   ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 'latest',
-  },
   rules: {
-    // "no-var-requires": 0,
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
     'no-console': 'off',
   },
