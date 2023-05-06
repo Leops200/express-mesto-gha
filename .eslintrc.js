@@ -11,6 +11,14 @@ module.exports = {
   ],
   overrides: [
   ],
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['global_modules'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
+  },
   rules: {
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
     'no-console': 'off',
