@@ -9,7 +9,7 @@ const ERROR_BAD_REQUEST_CODE = 400;
 const ERROR_NOT_FOUND_CODE = 404;
 const ERROR_SERVER_CODE = 500;
 
-module.exports.errorsHandler = (err, res) => {
+module.exports.errorsProcessing = (err, res) => {
   if (err instanceof ValidationError) {
     const errorMessage = Object.values(err.errors).map((error) => error.message).join(' ');
     return res.status(ERROR_BAD_REQUEST_CODE).send({
