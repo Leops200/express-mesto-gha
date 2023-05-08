@@ -2,6 +2,8 @@
 logs
 *.log
 npm-debug.log*
+*.log
+logs
 # Нода
 node_modules
 # Опции
@@ -9,3 +11,5 @@ node_modules
 .DS_Store
 .idea
 .vscode
+
+*.env
