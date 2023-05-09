@@ -6,6 +6,8 @@ const validationErrors = require('celebrate').errors;
 const cookieParser = require('cookie-parser');
 const router = require('./routes/index');
 
+const ERROR_SERVER_CODE = 500;
+
 // Слушаем 3000 порт
 // const { PORT = 3000 } = process.env;
 const PORT = process.env.PORT || 3000;
@@ -20,7 +22,7 @@ app.get('/user', (req, res) => {
 
   res.send({isTest: "1233544"});
 })
-*/
+
 app.use((req, res, next) => {
   req.user = {
     _id: '644a52787e7f73995231f3d3',
@@ -28,6 +30,7 @@ app.use((req, res, next) => {
 
   next();
 });
+*/
 
 app.use(express.json());
 app.use(cookieParser());
@@ -35,6 +38,18 @@ app.use(helmet());
 
 app.use('/', router);
 app.use(validationErrors());
+
+app.use((err, req, res, next) => {
+  const { statusCode = ERROR_SERVER_CODE, message } = err;
+
+  res
+    .status(statusCode)
+    .send({
+      message: statusCode === ERROR_SERVER_CODE ? 'На сервере произошла ошибка' : message,
+    });
+
+  next();
+});
 
 app.listen(PORT, () => {
   // Если всё работает, консоль покажет, какой порт приложение слушает
