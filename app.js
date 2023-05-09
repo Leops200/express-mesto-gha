@@ -8,6 +8,7 @@ const router = require('./routes/index');
 
 const ERROR_SERVER_CODE = 500;
 
+// =====================================================
 // Слушаем 3000 порт
 // const { PORT = 3000 } = process.env;
 const PORT = process.env.PORT || 3000;
