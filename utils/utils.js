@@ -1,3 +1,21 @@
 const REGEX = /(https?:\/\/)(www)?([a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=])*#?$/;
+const CODE = 200;
+const CREATED_CODE = 201;
+const ERROR_BAD_REQUEST_CODE = 400;
+const ERROR_UNAUTHORIZED_CODE = 401;
+const ERROR_FORBIDDEN_CODE = 403;
+const ERROR_NOT_FOUND_CODE = 404;
+const ERROR_CONFLICT_CODE = 409;
+const ERROR_SERVER_CODE = 500;
 
-module.exports = { REGEX };
+module.exports = {
+  REGEX,
+  CODE,
+  CREATED_CODE,
+  ERROR_BAD_REQUEST_CODE,
+  ERROR_UNAUTHORIZED_CODE,
+  ERROR_FORBIDDEN_CODE,
+  ERROR_NOT_FOUND_CODE,
+  ERROR_CONFLICT_CODE,
+  ERROR_SERVER_CODE,
+};

@@ -1,12 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const helmet = require('helmet');
 const validationErrors = require('celebrate').errors;
 const cookieParser = require('cookie-parser');
 const router = require('./routes/index');
-
-const ERROR_SERVER_CODE = 500;
+const errProcess = require('./errors/errorsProcess');
+const { ERROR_SERVER_CODE } = require('./utils/utils');
 
 // =====================================================
 // Слушаем 3000 порт
@@ -35,10 +34,9 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(helmet());
-
 app.use('/', router);
 app.use(validationErrors());
+app.use(errProcess);
 
 app.use((err, req, res, next) => {
   const { statusCode = ERROR_SERVER_CODE, message } = err;
@@ -46,7 +44,7 @@ app.use((err, req, res, next) => {
   res
     .status(statusCode)
     .send({
-      message: statusCode === ERROR_SERVER_CODE ? 'На сервере произошла ошибка' : message,
+      message: statusCode === ERROR_SERVER_CODE ? 'Ошибка сервера' : message,
     });
 
   next();
