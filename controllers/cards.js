@@ -9,11 +9,13 @@ const Forbidden = require('../errors/Forbidden');
 
 const Card = require('../models/card');
 
-const CODE = 200;
-const CREATED_CODE = 201;
-// const ERROR_BAD_REQUEST_CODE = 400;
-const ERROR_NOT_FOUND_CODE = 404;
-// const ERROR_SERVER_CODE = 500;
+const {
+  CODE,
+  CREATED_CODE,
+  // const ERROR_BAD_REQUEST_CODE = 400;
+  ERROR_NOT_FOUND_CODE,
+  // const ERROR_SERVER_CODE = 500;
+} = require('../utils/utils');
 
 //= =====================================================
 
@@ -47,7 +49,7 @@ const cardCheck = (card, res) => {
   }
   return res
     .status(ERROR_NOT_FOUND_CODE)
-    .send({ message: `Карточка с указанным _id не найдена ${ERROR_NOT_FOUND_CODE}` });
+    .send({ message: `Карточка с таким _id отсутствует ${ERROR_NOT_FOUND_CODE}` });
 };
 //= =====================================================
 
@@ -93,8 +95,8 @@ module.exports.deleteCards = (req, res, next) => {
         .populate([
           { path: 'owner', model: 'user' },
         ])
-        .then((cardDeleted) => {
-          res.send({ data: cardDeleted });
+        .then((cardDelete) => {
+          res.send({ data: cardDelete });
         });
     })
     .catch(next);

@@ -41,7 +41,7 @@ module.exports = (err, req, res, next) => {
   res
     .status(ERROR_SERVER_CODE)
     .send({
-      message: 'Ошибка сервера',
+      message: 'Ошибка сервера??',
     });
   return next();
 };

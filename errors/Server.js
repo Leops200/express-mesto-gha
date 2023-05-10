@@ -1,9 +1,9 @@
-const ERROR_SERVER_CODE = 500;
+const ERROR_SERVER_CODE = require('../utils/utils');
 
 class Server extends Error {
   constructor(message) {
     super(message);
-    this.type = { ERROR_SERVER_CODE };
+    this.type = ERROR_SERVER_CODE;
   }
 }
 

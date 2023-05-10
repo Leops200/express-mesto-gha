@@ -18,10 +18,10 @@ const app = express();
 mongoose.connect(DATA_BASE);
 /*
 app.get('/user', (req, res) => {
-  console.log("test get");
+  console.log('test get');
 
-  res.send({isTest: "1233544"});
-})
+  res.send({ isTest: '1233544' });
+});
 
 app.use((req, res, next) => {
   req.user = {
@@ -44,7 +44,7 @@ app.use((err, req, res, next) => {
   res
     .status(statusCode)
     .send({
-      message: statusCode === ERROR_SERVER_CODE ? 'Ошибка сервера' : message,
+      message: statusCode === ERROR_SERVER_CODE ? 'Ошибка сервера (app)' : message,
     });
 
   next();

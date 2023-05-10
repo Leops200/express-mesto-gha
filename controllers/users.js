@@ -4,12 +4,15 @@ const User = require('../models/user');
 
 const { NODE_ENV, SECRET_KEY } = process.env;
 
-const CODE = 200;
-const CREATED_CODE = 201;
-// const ERROR_BAD_REQUEST_CODE = 400;
-const ERROR_UNAUTHORIZED_CODE = 401;
-const ERROR_NOT_FOUND_CODE = 404;
-// const ERROR_SERVER_CODE = 500;
+const {
+  CODE,
+  CREATED_CODE,
+  // const ERROR_BAD_REQUEST_CODE = 400;
+  ERROR_UNAUTHORIZED_CODE,
+  ERROR_NOT_FOUND_CODE,
+  // const ERROR_SERVER_CODE = 500;
+} = require('../utils/utils');
+
 //= ====================================================
 const userCheck = (user, res) => {
   if (user) {
@@ -32,7 +35,7 @@ module.exports.getUserId = (req, res, next) => {
   User.findById(userId)
     .orFail()
     .then((user) => userCheck(user, res))
-    .catch((err) => { next(err); });
+    .catch((error) => { next(error); });
 };
 //= ====================================================
 module.exports.getProfile = (req, res, next) => {
@@ -94,7 +97,7 @@ module.exports.login = (req, res) => {
           expiresIn: '7d',
         },
       );
-      res.cookie('jwt', token, {
+      res.cookie('token', token, {
         httpOnly: true,
         sameSite: true,
         maxAge: 3600000 * 24 * 7,
