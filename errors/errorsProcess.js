@@ -10,7 +10,7 @@ const Forbidden = require('./Forbidden');
 const Unauthorized = require('./Unauthorized');
 
 // ========================================================
-module.exports = (err, req, res) => {
+module.exports = (err, req, res, next) => {
   // const statusCode = err.statusCode || 500;
   if (err instanceof NotFound || err instanceof Unauthorized || err instanceof Forbidden) {
     // const { message } = err;
@@ -43,5 +43,5 @@ module.exports = (err, req, res) => {
     message: /* statusCode === ERROR_SERVER_CODE ? */ 'Ошибка сервера??' /* : err.message */,
     // stack: err.stack, // Добавим стек ошибки в тело ответа
   });
-  return res;
+  return next();
 };

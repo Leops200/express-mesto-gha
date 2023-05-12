@@ -1,4 +1,4 @@
-const ERROR_SERVER_CODE = require('../utils/utils');
+const { ERROR_SERVER_CODE } = require('../utils/utils');
 
 class Server extends Error {
   constructor(message) {
