@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const validator = require('validator');
-const { REGEX } = require('../utils/utils');
+// const validator = require('validator');
+// const { REGEX } = require('../utils/utils');
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,21 +23,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       // required: true,
       default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
-      validator: (val) => REGEX.test(val),
-      message: 'Некорректный ввод',
+      // validator: (val) => REGEX.test(val),
+      // message: 'Некорректный ввод',
     },
     email: {
       type: String,
       unique: true,
       require: true,
-      validate: {
+      /* validate: {
         validator: (email) => validator.isEmail(email),
         message: ({ val }) => `${val} Недействительный адрес`,
-      },
+      }, */
+      default: 'em@em1.ru',
     },
     password: {
       type: String,
-      required: [true, 'Введите пароль'],
+      required: true,
       select: false,
     },
   },

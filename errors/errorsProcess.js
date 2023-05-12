@@ -10,7 +10,8 @@ const Forbidden = require('./Forbidden');
 const Unauthorized = require('./Unauthorized');
 
 // ========================================================
-module.exports = (err, req, res, next) => {
+module.exports = (err, req, res) => {
+  const statusCode = err.statusCode || 500;
   if (err instanceof NotFound || err instanceof Unauthorized || err instanceof Forbidden) {
     const { message } = err;
     return res
@@ -37,11 +38,9 @@ module.exports = (err, req, res, next) => {
       .status(ERROR_CONFLICT_CODE)
       .send({ message: 'Пользователь с таким адресом уже существует' });
   }
-
-  res
-    .status(ERROR_SERVER_CODE)
-    .send({
-      message: 'Ошибка сервера??',
-    });
-  return next();
+  console.error(err); // Добавим вывод ошибки в консоль
+  res.status(ERROR_SERVER_CODE).send({
+    message: statusCode === ERROR_SERVER_CODE ? 'Ошибка сервера??' : err.message,
+    stack: err.stack, // Добавим стек ошибки в тело ответа
+  });
 };
