@@ -10,13 +10,13 @@ const Forbidden = require('./Forbidden');
 const Unauthorized = require('./Unauthorized');
 
 // ========================================================
-module.exports = (err, req, res, next) => {
+module.exports = (err, req, res) => {
   // const statusCode = err.statusCode || 500;
   if (err instanceof NotFound || err instanceof Unauthorized || err instanceof Forbidden) {
-    const { message } = err;
+    // const { message } = err;
     return res
       .status(err.type)
-      .send({ message });
+      .send({ message: err.message });
   }
 
   if (err instanceof CastError || err instanceof ValidationError) {
@@ -43,5 +43,5 @@ module.exports = (err, req, res, next) => {
     message: /* statusCode === ERROR_SERVER_CODE ? */ 'Ошибка сервера??' /* : err.message */,
     // stack: err.stack, // Добавим стек ошибки в тело ответа
   });
-  return next();
+  return res;
 };

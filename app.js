@@ -18,11 +18,11 @@ const DATA_BASE = process.env.DATA_BASE || 'mongodb://localhost:27017/mestodb';
 
 const app = express();
 
-// app.use(express.json());
+app.use(express.json());
 
-/* app.get('/', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello World!');
-}); */
+});
 
 mongoose.connect(DATA_BASE);
 /*
