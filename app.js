@@ -8,7 +8,7 @@ const errProcess = require('./errors/errorsProcess');
 const { ERROR_SERVER_CODE } = require('./utils/utils');
 
 // const bcrypt = require('bcryptjs');
-const User = require('./models/user');
+// const User = require('./models/user');
 
 // =====================================================
 // Слушаем 3000 порт
@@ -18,14 +18,14 @@ const DATA_BASE = process.env.DATA_BASE || 'mongodb://localhost:27017/mestodb';
 
 const app = express();
 
-app.use(express.json());
+// app.use(express.json());
 
-app.get('/', (req, res) => {
+/* app.get('/', (req, res) => {
   res.send('Hello World!');
-});
+}); */
 
 mongoose.connect(DATA_BASE);
-
+/*
 app.post('/signup', (req, res) => {
   const {
     name, about, avatar, email, password,
@@ -42,13 +42,13 @@ app.post('/signup', (req, res) => {
       password: user.password,
     }))
     .catch((err) => res.status(422).send({ message: err.message, err }));
-  /*
+
   console.log('-start test');
   console.log(req.headers);
   console.log('- end test -');
   res.send(req.headers);
-  */
-});
+
+}); */
 /*
 app.use((req, res, next) => {
   req.user = {
