@@ -1,16 +1,17 @@
+// IMPORT PACKAGES
 const router = require('express').Router();
-const { Joi, celebrate } = require('celebrate');
+const { celebrate, Joi } = require('celebrate');
+
+// IMPORT CONTROLLERS
 const { login } = require('../controllers/users');
 
-router.post(
-  '/signin',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-    }),
+// LOGIN ROUTE
+router.post('/', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
   }),
-  login,
-);
+}), login);
 
+// MODULE EXPORT
 module.exports = router;

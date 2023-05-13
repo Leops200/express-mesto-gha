@@ -4,44 +4,31 @@ const User = require('../models/user');
 
 const { NODE_ENV, SECRET_KEY } = process.env;
 
-const {
-  CODE,
-  CREATED_CODE,
-  // const ERROR_BAD_REQUEST_CODE = 400;
-  ERROR_UNAUTHORIZED_CODE,
-  ERROR_NOT_FOUND_CODE,
-  // const ERROR_SERVER_CODE = 500;
-} = require('../utils/utils');
+const { CREATED_CODE } = require('../utils/utils');
 
 //= ====================================================
-const userCheck = (user, res) => {
-  if (user) {
-    return res.send({ data: user });
-  }
-  return res
-    .status(ERROR_NOT_FOUND_CODE)
-    .send({ message: 'Пользователь с таким _id не найден' });
+const userCheck = (req, res, upData, next) => {
+  User.findById(upData)
+    .orFail()
+    .then((user) => res.send(user))
+    .catch(next);
 };
 
 //= ====================================================
 module.exports.getAllUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.status(CODE).send(users))
+    .then((users) => res.send(users))
     .catch(next);
 };
 //= ====================================================
 module.exports.getUserId = (req, res, next) => {
-  const { userId } = req.params;
-  User.findById(userId)
-    .orFail()
-    .then((user) => userCheck(user, res))
-    .catch((error) => { next(error); });
+  const requiredData = req.user._id;
+  userCheck(req, res, requiredData, next);
 };
 //= ====================================================
 module.exports.getProfile = (req, res, next) => {
-  User.findById(req.user._id)
-    .then((user) => res.send(user))
-    .catch(next);
+  const requiredData = req.params.userId;
+  userCheck(req, res, requiredData, next);
 };
 
 //= ====================================================
@@ -55,36 +42,36 @@ module.exports.createUser = (req, res, next) => {
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-    .then((user) => res.status(CREATED_CODE)
-      .send({ data: user }))
+    .then((user) => {
+      const data = user.toObject();
+      delete data.password;
+      res.status(CREATED_CODE).send(data);
+    })
     .catch(next);
 };
 //= ====================================================
 
 const updateUser = (req, res, upData, next) => {
-  const userId = req.user._id;
-  User.findByIdAndUpdate(userId, upData, {
-    runValidators: true,
-    new: true,
-  })
-    .then((user) => userCheck(user, res))
+  User.findByIdAndUpdate(req.user._id, upData, { new: true, runValidators: true })
+    .orFail()
+    .then((user) => res.send(user))
     .catch(next);
 };
 // =====================================================
 
 module.exports.updateProfil = (req, res, next) => {
-  const { name, about } = req.body;
-  updateUser(req, res, { name, about }, next);
+  const upData = req.body;
+  updateUser(req, res, upData, next);
 };
 // =====================================================
 
 module.exports.updateAvatar = (req, res, next) => {
-  const { avatar } = req.body;
-  updateUser(req, res, { avatar }, next);
+  const upData = req.body;
+  updateUser(req, res, upData, next);
 };
 // =====================================================
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCrerentials(email, password)
     .then((user) => {
@@ -97,17 +84,14 @@ module.exports.login = (req, res) => {
           expiresIn: '7d',
         },
       );
-      res.cookie('token', token, {
+      res.cookie('jwt', token, {
         httpOnly: true,
         sameSite: true,
         maxAge: 3600000 * 24 * 7,
-      })
-        .send({ token });
+      });
+      res.send({ message: 'Вход выполнен' });
     })
-    .catch((err) => {
-      res.status(ERROR_UNAUTHORIZED_CODE)
-        .send({ message: err.message });
-    });
+    .catch(next);
 };
 /* User.create({ name, about, avatar })
     .then((user) => res.status(CREATED_CODE)

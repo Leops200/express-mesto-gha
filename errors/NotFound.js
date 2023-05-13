@@ -1,10 +1,10 @@
 const { ERROR_NOT_FOUND_CODE } = require('../utils/utils');
 
-class NotFounderr extends Error {
+class NotFound extends Error {
   constructor(message) {
     super(message);
     this.type = ERROR_NOT_FOUND_CODE;
   }
 }
 
-module.exports = NotFounderr;
+module.exports = NotFound;
