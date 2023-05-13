@@ -1,12 +1,11 @@
+const Card = require('../models/card');
 const Forbidden = require('../errors/Forbidden');
 
-const Card = require('../models/card');
-
 const {
-  CODE,
+  // CODE,
   CREATED_CODE,
   // const ERROR_BAD_REQUEST_CODE = 400;
-  ERROR_NOT_FOUND_CODE,
+  // ERROR_NOT_FOUND_CODE,
   // const ERROR_SERVER_CODE = 500;
 } = require('../utils/utils');
 
