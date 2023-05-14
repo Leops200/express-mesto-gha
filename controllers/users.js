@@ -74,7 +74,7 @@ module.exports.updateAvatar = (req, res, next) => {
 module.exports.login = (req, res, next) => {
   console.log('point login');
   const { email, password } = req.body;
-  return User.findUserByCrerentials(email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
         {
