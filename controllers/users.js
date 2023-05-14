@@ -72,18 +72,13 @@ module.exports.updateAvatar = (req, res, next) => {
 // =====================================================
 
 module.exports.login = (req, res, next) => {
-  console.log('point login');
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
-        {
-          _id: user._id,
-        },
+        { _id: user._id },
         NODE_ENV === 'production' ? SECRET_KEY : 'dev-secret-key',
-        {
-          expiresIn: '7d',
-        },
+        { expiresIn: '7d' },
       );
       res.cookie('jwt', token, {
         httpOnly: true,
@@ -91,6 +86,8 @@ module.exports.login = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
       });
       res.send({ message: 'Вход выполнен' });
+      console.log('выдан токен:');
+      console.log(token);
     })
     .catch(next);
 };
