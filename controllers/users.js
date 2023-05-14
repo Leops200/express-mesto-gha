@@ -22,12 +22,12 @@ const userCheck = (req, res, upData, next) => {
 };
 //= ====================================================
 module.exports.getUserId = (req, res, next) => {
-  const requiredData = req.user._id;
+  const requiredData = req.params.userId;
   userCheck(req, res, requiredData, next);
 };
 //= ====================================================
 module.exports.getProfile = (req, res, next) => {
-  const requiredData = req.params.userId;
+  const requiredData = req.user._id;
   userCheck(req, res, requiredData, next);
 };
 
