@@ -1,5 +1,4 @@
 const Card = require('../models/card');
-const Forbidden = require('../errors/Forbidden');
 
 const {
   // CODE,
@@ -9,6 +8,16 @@ const {
   // const ERROR_SERVER_CODE = 500;
 } = require('../utils/utils');
 
+const Forbidden = require('../errors/Forbidden');
+
+//= =====================================================
+
+module.exports.getAllCards = (req, res, next) => {
+  Card.find({})
+    .populate(['owner', 'likes'])
+    .then((cards) => res.send(cards))
+    .catch(next);
+};
 //= =====================================================
 
 module.exports.createCards = (req, res, next) => {
@@ -20,14 +29,6 @@ module.exports.createCards = (req, res, next) => {
     .catch(next);
 };
 
-//= =====================================================
-
-module.exports.getAllCards = (req, res, next) => {
-  Card.find({})
-    .populate(['owner', 'likes'])
-    .then((cards) => res.send(cards))
-    .catch(next);
-};
 //= =====================================================
 
 const upLikes = (req, res, upData, next) => {

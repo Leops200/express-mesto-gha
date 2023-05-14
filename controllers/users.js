@@ -7,17 +7,17 @@ const { NODE_ENV, SECRET_KEY } = process.env;
 const { CREATED_CODE } = require('../utils/utils');
 
 //= ====================================================
-const userCheck = (req, res, upData, next) => {
-  User.findById(upData)
-    .orFail()
-    .then((user) => res.send(user))
+module.exports.getAllUsers = (req, res, next) => {
+  User.find({})
+    .then((users) => res.send(users))
     .catch(next);
 };
 
 //= ====================================================
-module.exports.getAllUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.send(users))
+const userCheck = (req, res, upData, next) => {
+  User.findById(upData)
+    .orFail()
+    .then((user) => res.send(user))
     .catch(next);
 };
 //= ====================================================
@@ -72,6 +72,7 @@ module.exports.updateAvatar = (req, res, next) => {
 // =====================================================
 
 module.exports.login = (req, res, next) => {
+  console.log('point login');
   const { email, password } = req.body;
   return User.findUserByCrerentials(email, password)
     .then((user) => {
