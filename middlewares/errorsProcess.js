@@ -29,17 +29,17 @@ module.exports = ((err, req, res, next) => {
   }
   if (err instanceof Unauthorized) {
     return res.status(err.type).send({
-      message: err.message,
+      message: `${err.message} Пройдите авторизацию`,
     });
   }
   if (err instanceof Forbidden) {
     return res.status(err.type).send({
-      message: err.message,
+      message: `${err.message} Ошибка в errProc /37/`,
     });
   }
   if (err instanceof NotFound) {
     return res.status(err.type).send({
-      message: err.message,
+      message: `${err.message} Ошибка в errProc /42/`,
     });
   }
   if (err.code === 11000) {

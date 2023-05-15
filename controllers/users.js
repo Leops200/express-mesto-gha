@@ -15,6 +15,7 @@ module.exports.getAllUsers = (req, res, next) => {
 
 //= ====================================================
 const userCheck = (req, res, upData, next) => {
+  console.log(upData);
   User.findById(upData)
     .orFail()
     .then((user) => res.send(user))
@@ -22,13 +23,16 @@ const userCheck = (req, res, upData, next) => {
 };
 //= ====================================================
 module.exports.getUserId = (req, res, next) => {
-  const requiredData = req.params.userId;
-  userCheck(req, res, requiredData, next);
+  const reqData = req.params.userId;
+  // console.log('requiredData:');
+  // console.log(requiredData);
+  userCheck(req, res, reqData, next);
 };
 //= ====================================================
 module.exports.getProfile = (req, res, next) => {
-  const requiredData = req.user._id;
-  userCheck(req, res, requiredData, next);
+  const reqData = req.user._id;
+  console.log('requiredData: test');
+  userCheck(req, res, reqData, next);
 };
 
 //= ====================================================
@@ -76,9 +80,13 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
-        { _id: user._id },
+        {
+          _id: user._id,
+        },
         NODE_ENV === 'production' ? SECRET_KEY : 'dev-secret-key',
-        { expiresIn: '7d' },
+        {
+          expiresIn: '7d',
+        },
       );
       res.cookie('jwt', token, {
         httpOnly: true,
@@ -88,6 +96,7 @@ module.exports.login = (req, res, next) => {
       res.send({ message: 'Вход выполнен' });
       console.log('выдан токен:');
       console.log(token);
+      console.log(`userId: ${user._id}`);
     })
     .catch(next);
 };
