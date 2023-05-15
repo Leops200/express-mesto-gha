@@ -5,7 +5,6 @@ const User = require('../models/user');
 const { NODE_ENV, SECRET_KEY } = process.env;
 
 const { CREATED_CODE } = require('../utils/utils');
-const NotFound = require('../errors/NotFound');
 
 //= ====================================================
 module.exports.getAllUsers = (req, res, next) => {
@@ -73,23 +72,6 @@ module.exports.updateProfil = (req, res, next) => {
 module.exports.updateAvatar = (req, res, next) => {
   const upData = req.body;
   updateUser(req, res, upData, next);
-};
-// =====================================================
-
-module.exports.gtUserMe = async (req, res, next) => {
-  const userId = req.user._id;
-  try {
-    const user = await User.findById(userId);
-    console.log(`userId: ${userId}`);
-    if (user) {
-      res.status(200).send({ user });
-      console.log('gtUserMe');
-    } else {
-      throw new NotFound('Пользователь по указанному id не найден');
-    }
-  } catch (err) {
-    next(err);
-  }
 };
 // =====================================================
 module.exports.login = (req, res, next) => {

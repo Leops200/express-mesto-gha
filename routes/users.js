@@ -5,13 +5,13 @@ const { REGEX } = require('../utils/utils');
 const {
   getAllUsers,
   getUserId,
-  gtUserMe,
+  getProfile,
   updateProfil,
   updateAvatar,
 } = require('../controllers/users');
 
 router.get('/', getAllUsers);
-router.get('/me', gtUserMe);
+router.get('/me', getProfile);
 
 router.get('/:userId', celebrate({
   params: Joi.object().keys({
