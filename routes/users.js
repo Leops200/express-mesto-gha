@@ -5,20 +5,19 @@ const { REGEX } = require('../utils/utils');
 const {
   getAllUsers,
   getUserId,
-  getProfile,
+  gtUserMe,
   updateProfil,
   updateAvatar,
 } = require('../controllers/users');
 
 router.get('/', getAllUsers);
+router.get('/me', gtUserMe);
 
 router.get('/:userId', celebrate({
   params: Joi.object().keys({
     userId: Joi.string().required().hex().length(24),
   }),
 }), getUserId);
-
-router.get('/me', getProfile);
 
 router.patch('/me', celebrate({
   body: Joi.object().keys({
