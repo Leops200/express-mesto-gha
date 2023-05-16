@@ -29,17 +29,17 @@ module.exports = ((err, req, res, next) => {
   }
   if (err instanceof Unauthorized) {
     return res.status(err.type).send({
-      message: `${err.message} Пройдите авторизацию`,
+      message: err.message,
     });
   }
   if (err instanceof Forbidden) {
     return res.status(err.type).send({
-      message: `${err.message} Ошибка в errProc /37/`,
+      message: err.message,
     });
   }
   if (err instanceof NotFound) {
     return res.status(err.type).send({
-      message: `${err.message} Ошибка в errProc /42/`,
+      message: err.message,
     });
   }
   if (err.code === 11000) {
@@ -49,7 +49,7 @@ module.exports = ((err, req, res, next) => {
   }
   console.error(err); // Добавим вывод ошибки в консоль
   res.status(ERROR_SERVER_CODE).send({
-    message: `Произошла неизвестная ошибка ${err.name}: ${err.message}`,
+    message: `На сервере произошла ошибка ${err.name}: ${err.message}`,
   });
   return next();
 });
